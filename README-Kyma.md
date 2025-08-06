@@ -160,42 +160,6 @@ pack build $YOUR_CONTAINER_REGISTRY/sflight-srv \
      --env BP_NODE_RUN_SCRIPTS=""
 ```
 
-## Build - Java
-
-Do the following steps if you want to deploy the **Java** application.
-
-**Build data base deployer image:**
-
-```bash
-cds build --production
-```
-
-```bash
-pack build $YOUR_CONTAINER_REGISTRY/sflight-hana-deployer \
-     --path gen/db \
-     --buildpack gcr.io/paketo-buildpacks/nodejs \
-     --builder paketobuildpacks/builder-jammy-base \
-     --env BP_NODE_RUN_SCRIPTS=""
-```
-
-(Replace `$YOUR_CONTAINER_REGISTRY` with the full-qualified hostname of your container registry)
-
-**Build image for CAP service:**
-
-```bash
-mvn package
-```
-
-```bash
-pack build $YOUR_CONTAINER_REGISTRY/sflight-srv \
-     --path srv/target/*-exec.jar \
-     --buildpack gcr.io/paketo-buildpacks/sap-machine \
-     --buildpack gcr.io/paketo-buildpacks/java \
-     --builder paketobuildpacks/builder-jammy-base \
-     --env SPRING_PROFILES_ACTIVE=cloud \
-     --env BP_JVM_VERSION=17
-```
-
 ## Build HTML5 application deployer image
 
 ```

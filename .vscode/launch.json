@@ -5,27 +5,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "java",
-      "name": "Launch SFlightApplication",
-      "request": "launch",
-      "mainClass": "com.sap.cap.sflight.SFlightApplication",
-      "projectName": "srv"
-    },
-    {
+      "command": "cds watch --profile hybrid",
       "name": "cds watch",
-      "command": "npx cds watch",
-      "env": {
-        "DEBUG": "sqlite"
-      },
-      "type": "node-terminal",
       "request": "launch",
-      "skipFiles": [
-        "<node_internals>/**",
-        "**/node_modules/**",
-        "**/cds/lib/lazy.js",
-        "**/cds/lib/req/cls.js",
-        "**/odata-v4/okra/**"
-      ]
-    }
+      "type": "node-terminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
   ]
 }

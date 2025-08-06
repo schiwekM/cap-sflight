@@ -15,23 +15,26 @@
     "test": "jest",
     "test:mocha": "npx -y mocha",
     "travel-processor": "cds watch --open sap.fe.cap.travel/index.html?sap-ui-xx-viewCache=false",
-    "travel-analytics": "cds watch --open sap.fe.cap.travel_analytics/index.html?sap-ui-xx-viewCache=false"
+    "travel-analytics": "cds watch --open sap.fe.cap.travel_analytics/index.html?sap-ui-xx-viewCache=false",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@cap-js/hana": ">=2",
     "@sap/cds": ">=9.1",
+    "@sap/hana-client": "^2.25.29",
     "@sap/xssec": "^4",
-    "express": "^4"
+    "express": "^4",
+    "patch-package": "^8.0.0"
   },
   "devDependencies": {
     "@cap-js/cds-test": "^0",
     "@cap-js/cds-typer": "^0.35.0",
     "@cap-js/cds-types": "^0",
     "@cap-js/sqlite": ">=2",
-    "@sap/cds-dk" : ">=9.1",
+    "@sap/cds-dk": ">=9.1",
     "@sap/ux-specification": "UI5-1.128",
     "@types/jest": "^29.5.13",
-    "cds-plugin-ui5": "^0.13.1",
+    "better-sqlite3": "^12.2.0",
     "cross-spawn": "^7.0.3",
     "eslint": "^9",
     "http-proxy": "^1.18.1",
@@ -43,15 +46,17 @@
   },
   "cds": {
     "requires": {
-      "db": {
-        "kind": "sql"
-      },
       "[production]": {
         "db": {
           "kind": "hana"
         },
         "auth": {
           "kind": "xsuaa"
+        }
+      },
+      "[hybrid]": {
+        "db": {
+          "kind": "hana"
         }
       },
       "[development]": {
@@ -79,10 +84,8 @@
             }
           }
         }
-      }
-    },
-    "log": {
-      "service": true
+      },
+      "application-logging": true
     },
     "fiori": {
       "wrap_multiple_errors": false
@@ -99,14 +102,6 @@
           },
           {
             "for": "hana"
-          }
-        ]
-      },
-      "[java]": {
-        "target": ".",
-        "tasks": [
-          {
-            "for": "java-cf"
           }
         ]
       },
@@ -129,14 +124,6 @@
     "globalSetup": "./test/setup.ts",
     "testEnvironment": "node",
     "testTimeout": 20000
-  },
-  "mocha": {
-    "node-option": [
-      "import=tsx"
-    ],
-    "require": "test/setup.ts",
-    "spec": "test/**/*.ts",
-    "timeout": 20000
   },
   "sapux": [
     "app/travel_processor",

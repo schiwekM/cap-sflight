@@ -14,27 +14,31 @@ build-parameters:
         # set 'CDS_ENV=node' to pick the 'node' build profile settings, defined in package.json
         - npm ci
         - npx -p @sap/cds-dk cds build --profile production,node
+        #- cp -R patches gen/srv/
 
 modules:
   # --------------------- SERVER MODULE ------------------------
   - name: sflight-srv
-  # ------------------------------------------------------------
+    # ------------------------------------------------------------
     type: nodejs
     path: gen/srv
     requires:
       - name: sflight-db
       - name: sflight-uaa
+      - name: sflight-logging
+      - name: sflight-cloud-logging
     provides:
       - name: srv-api # required by consumers of CAP services (e.g. approuter, destinations)
         properties:
           srv-url: ${default-url}
     build-parameters:
       builder: npm-ci
-      ignore: ["node_modules/"]
+      ignore:
+        - "node_modules/"
 
   # -------------------- SIDECAR MODULE ------------------------
   - name: sflight-db-deployer
-  # ------------------------------------------------------------
+    # ------------------------------------------------------------
     type: hdb
     path: gen/db
     parameters:
@@ -43,11 +47,12 @@ modules:
       - name: sflight-db
       - name: sflight-uaa
     build-parameters:
-      ignore: ["node_modules/"]
+      ignore:
+        - "node_modules/"
 
   # ------------------ APPLICATION CONTENT ---------------------
   - name: sflight-appcontent
-  # ------------------------------------------------------------
+    # ------------------------------------------------------------
     type: com.sap.application.content
     path: gen
     requires:
@@ -69,7 +74,7 @@ modules:
 
   # ------------- APPLICATION: TRAVEL PROCESSOR ----------------
   - name: sflight-app-travel-processor
-  # ------------------------------------------------------------
+    # ------------------------------------------------------------
     type: html5
     path: app/travel_processor
     build-parameters:
@@ -77,11 +82,12 @@ modules:
       builder: custom
       commands:
         - npm run build
-      supported-platforms: []
+      supported-platforms:
+        []
 
   # ------------- APPLICATION: TRAVEL ANALYTICS ----------------
   - name: sflight-app-travel-analytics
-  # ------------------------------------------------------------
+    # ------------------------------------------------------------
     type: html5
     path: app/travel_analytics
     build-parameters:
@@ -89,15 +95,17 @@ modules:
       builder: custom
       commands:
         - npm run build
-      supported-platforms: []
+      supported-platforms:
+        []
 
   # ------------------ DESTINATION CONTENT ---------------------
   - name: sflight-destinationcontent
-  # ------------------------------------------------------------
+    # ------------------------------------------------------------
     type: com.sap.application.content
     build-parameters:
       no-source: true
     requires:
+      - name: srv-api
       - name: sflight-uaa
         parameters:
           service-key:
@@ -123,11 +131,44 @@ modules:
               ServiceInstanceName: sflight-uaa
               ServiceKeyName: sflight-uaa-key
               sap.cloud.service: sap.fe.cap.sflight
+        subaccount:
+          existing_destinations_policy: update
+          destinations:
+            - Authentication: OAuth2ClientCredentials
+              HTML5.DynamicDestination: true
+              Name: sflight-app-srv
+              ServiceInstanceName: sflight-uaa
+              ServiceKeyName: sflight-uaa-key
+              URL: ~{srv-api/srv-url}
+              forwardAuthToken: true
+              sap.cloud.service: sap.fe.cap.sflight
+
+  - name: sflight
+    type: approuter.nodejs
+    path: app/router
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: sflight-uaa
+      - name: sflight-logging
+    provides:
+      - name: app-api
+        properties:
+          app-protocol: ${protocol}
+          app-uri: ${default-uri}
 
 resources:
   # ------------------------------------------------------------
   - name: sflight-db
-  # ------------------------------------------------------------
+    # ------------------------------------------------------------
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
@@ -137,7 +178,7 @@ resources:
 
   # ------------------------------------------------------------
   - name: sflight-uaa
-  # ------------------------------------------------------------
+    # ------------------------------------------------------------
     type: org.cloudfoundry.managed-service
     parameters:
       service: xsuaa
@@ -159,10 +200,15 @@ resources:
             description: Manage travels
             role-template-references:
               - $XSAPPNAME.admin
+        oauth2-configuration:
+          redirect-uris:
+            - https://~{app-api/app-uri}/**
+    requires:
+      - name: app-api
 
   # ------------------------------------------------------------
   - name: sflight-html5-repo-runtime
-  # ------------------------------------------------------------
+    # ------------------------------------------------------------
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
@@ -170,7 +216,7 @@ resources:
 
   # ------------------------------------------------------------
   - name: sflight-html5-repo-host
-  # ------------------------------------------------------------
+    # ------------------------------------------------------------
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
@@ -178,7 +224,7 @@ resources:
 
   # ------------------------------------------------------------
   - name: sflight-destination-service
-  # ------------------------------------------------------------
+    # ------------------------------------------------------------
     type: org.cloudfoundry.managed-service
     requires:
       - name: srv-api
@@ -199,4 +245,16 @@ resources:
                 ProxyType: Internet
                 HTML5.ForwardAuthToken: true
                 HTML5.DynamicDestination: true
-
+  - name: sflight-logging
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: application-logs
+      service-plan: lite
+  - name: sflight-cloud-logging
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: cloud-logging
+      service-plan: dev
+      config:
+        ingest_otlp:
+          enabled: true
