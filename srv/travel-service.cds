@@ -4,9 +4,9 @@ service TravelService @(path:'/processor') {
 
   @(restrict: [
     { grant: 'READ', to: 'authenticated-user'},
-    { grant: ['rejectTravel','acceptTravel','deductDiscount'], to: 'authenticated-user'},
-    { grant: ['*'], to: 'authenticated-user'},
-    { grant: ['*'], to: 'authenticated-user'}
+    { grant: ['rejectTravel','acceptTravel','deductDiscount'], to: 'reviewer'},
+    { grant: ['*'], to: 'processor'},
+    { grant: ['*'], to: 'admin'}
   ])
   entity Travel as projection on my.Travel actions {
     action createTravelByTemplate() returns Travel;

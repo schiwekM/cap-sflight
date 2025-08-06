@@ -20,10 +20,17 @@
   },
   "dependencies": {
     "@cap-js/hana": ">=2",
+    "@cap-js/telemetry": "^1.5.0",
+    "@grpc/grpc-js": "^1.13.4",
+    "@opentelemetry/exporter-metrics-otlp-grpc": "<0.200",
+    "@opentelemetry/exporter-trace-otlp-grpc": "<0.200",
+    "@opentelemetry/host-metrics": "<0.200",
     "@sap/cds": ">=9.1",
     "@sap/hana-client": "^2.25.29",
-    "@sap/xssec": "^4",
+    "@sap/xsenv": "^6.0.0",
+    "@sap/xssec": "^4.9.0",
     "express": "^4",
+    "passport": "^0.7.0",
     "patch-package": "^8.0.0"
   },
   "devDependencies": {
@@ -35,6 +42,7 @@
     "@sap/ux-specification": "UI5-1.128",
     "@types/jest": "^29.5.13",
     "better-sqlite3": "^12.2.0",
+    "cds-launchpad-plugin": "^2.2.0",
     "cross-spawn": "^7.0.3",
     "eslint": "^9",
     "http-proxy": "^1.18.1",
@@ -52,6 +60,9 @@
         },
         "auth": {
           "kind": "xsuaa"
+        },
+        "telemetry": {
+          "kind": "to-cloud-logging"
         }
       },
       "[hybrid]": {
@@ -84,14 +95,13 @@
             }
           }
         }
-      },
-      "application-logging": true
+      }
     },
     "fiori": {
       "wrap_multiple_errors": false
     },
     "build": {
-      "[node!]": {
+      "[production]": {
         "target": "gen",
         "tasks": [
           {
@@ -100,14 +110,6 @@
           {
             "for": "typescript"
           },
-          {
-            "for": "hana"
-          }
-        ]
-      },
-      "[hana]": {
-        "target": "gen",
-        "tasks": [
           {
             "for": "hana"
           }
