@@ -26,16 +26,29 @@ modules:
     path: gen/srv
     requires:
       - name: sflight-db
-      - name: sflight-uaa
       - name: sflight-cloud-logging
+      - name: sflight-auth
+        parameters:
+          config:
+            credential-type: X509_GENERATED
+            app-identifier: srv
     provides:
       - name: srv-api # required by consumers of CAP services (e.g. approuter, destinations)
         properties:
           srv-url: ${default-url}
+          srv-cert-url: '${protocol}://${default-host}.cert.${default-domain}'
     build-parameters:
       builder: npm-ci
       ignore:
         - "node_modules/"
+    parameters:
+      routes:
+        - route: "${default-url}"
+        - route: "${default-host}.cert.${default-domain}"
+    deployed-after:
+      - sflight-ams-policies-deployer
+    properties:
+      AMS_DCL_ROOT: ams/dcl
 
   # -------------------- SIDECAR MODULE ------------------------
   - name: sflight-db-deployer
@@ -46,7 +59,6 @@ modules:
       buildpack: nodejs_buildpack
     requires:
       - name: sflight-db
-      - name: sflight-uaa
       - name: sflight-cloud-logging
     build-parameters:
       ignore:
@@ -59,7 +71,6 @@ modules:
     path: gen
     requires:
       - name: srv-api
-      - name: sflight-uaa
       - name: sflight-html5-repo-host
         parameters:
           content-target: true
@@ -68,6 +79,7 @@ modules:
         destinations:
           - forwardAuthToken: true
             name: sflight-srv
+            HTML5.IASDependencyName: sflight-api
             url: ~{srv-api/srv-url}
           - name: ui5
             url: https://ui5.sap.com
@@ -117,10 +129,10 @@ modules:
       no-source: true
     requires:
       - name: srv-api
-      - name: sflight-uaa
+      - name: sflight-auth
         parameters:
           service-key:
-            name: sflight-uaa-key
+            name: sflight-auth-key
       - name: sflight-html5-repo-runtime
         parameters:
           service-key:
@@ -136,14 +148,32 @@ modules:
             - Authentication: OAuth2UserTokenExchange
               HTML5.DynamicDestination: true
               Name: sflight-srv
-              TokenServiceInstanceName: sflight-uaa
-              TokenServiceKeyName: sflight-uaa-key
+              TokenServiceInstanceName: sflight-auth
+              TokenServiceKeyName: sflight-auth-key
               URL: ~{srv-api/srv-url}
               sap.cloud.service: sap.fe.cap.sflight
             - Name: sflight-cdm
               ServiceInstanceName: sflight-html5-repo-runtime
               ServiceKeyName: sflight-html5-repo-runtime-key
               URL: https://html5-apps-repo-rt.cfapps.eu12.hana.ondemand.com/applications/cdm/sap.fe.cap.sflight
+
+  - name: sflight-ams-policies-deployer
+    type: javascript.nodejs
+    path: gen/policies
+    parameters:
+      buildpack: nodejs_buildpack
+      no-route: true
+      no-start: true
+      tasks:
+        - name: deploy-dcl
+          command: npm start
+          memory: 512M
+    requires:
+      - name: sflight-auth
+        parameters:
+          config:
+            credential-type: X509_GENERATED
+            app-identifier: ams-policy-deployer
 
 resources:
   # ------------------------------------------------------------
@@ -155,18 +185,6 @@ resources:
       service-plan: hdi-shared
     properties:
       hdi-service-name: ${service-name}
-
-  # ------------------------------------------------------------
-  - name: sflight-uaa
-    # ------------------------------------------------------------
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: xsuaa
-      service-plan: application
-      path: ./xs-security.json
-      config:
-        xsappname: sflight-${space}
-        tenant-mode: dedicated
 
   # ------------------------------------------------------------
   - name: sflight-html5-repo-runtime
@@ -222,3 +240,17 @@ resources:
       config:
         ingest_otlp:
           enabled: true
+  - name: sflight-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: identity
+      service-name: sflight-auth
+      service-plan: application
+      config:
+        display-name: sflight
+        provided-apis: 
+          - name: sflight-api
+            description: API exposed by SFlight app
+        authorization:
+          enabled: true
+        xsuaa-cross-consumption: true

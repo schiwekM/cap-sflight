@@ -25,10 +25,11 @@
     "@opentelemetry/exporter-metrics-otlp-grpc": "<0.200",
     "@opentelemetry/exporter-trace-otlp-grpc": "<0.200",
     "@opentelemetry/host-metrics": "<0.200",
+    "@sap/ams": "^3",
     "@sap/cds": ">=9.1",
     "@sap/hana-client": "^2.25.29",
     "@sap/xsenv": "^6.0.0",
-    "@sap/xssec": "^4.9.0",
+    "@sap/xssec": "^4",
     "express": "^4",
     "passport": "^0.7.0",
     "patch-package": "^8.0.0"
@@ -38,6 +39,7 @@
     "@cap-js/cds-typer": "^0.35.0",
     "@cap-js/cds-types": "^0",
     "@cap-js/sqlite": ">=2",
+    "@sap/ams-dev": "^2",
     "@sap/cds-dk": ">=9.1",
     "@sap/ux-specification": "UI5-1.128",
     "@types/jest": "^29.5.13",
@@ -58,9 +60,6 @@
         "db": {
           "kind": "hana"
         },
-        "auth": {
-          "kind": "xsuaa"
-        },
         "telemetry": {
           "kind": "to-cloud-logging"
         }
@@ -72,29 +71,32 @@
       },
       "[development]": {
         "auth": {
-          "kind": "mocked-auth",
+          "kind": "mocked",
           "users": {
             "rose": {
-              "roles": []
+              "policies": []
             },
             "martha": {
-              "roles": [
-                "reviewer"
+              "policies": [
+                "cap.reviewer"
               ]
             },
             "amy": {
-              "roles": [
-                "processor"
+              "policies": [
+                "cap.processor"
               ]
             },
             "admin": {
               "password": "admin",
-              "roles": [
-                "admin"
+              "policies": [
+                "cap.admin"
               ]
             }
           }
         }
+      },
+      "auth": {
+        "kind": "ias"
       }
     },
     "fiori": {
@@ -106,6 +108,9 @@
         "tasks": [
           {
             "for": "nodejs"
+          },
+          {
+            "for": "ams"
           },
           {
             "for": "typescript"

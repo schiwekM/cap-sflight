@@ -6,14 +6,14 @@
       "source": "^/processor/(.*)$",
       "target": "/processor/$1",
       "destination": "sflight-srv",
-      "authenticationType": "xsuaa",
+      "authenticationType": "ias",
       "csrfProtection": true
     },
     {
       "source": "^(.*)$",
       "target": "$1",
       "service": "html5-apps-repo-rt",
-      "authenticationType": "xsuaa"
+      "authenticationType": "ias"
     }
   ]
 }
