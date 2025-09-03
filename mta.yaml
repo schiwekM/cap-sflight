@@ -145,13 +145,6 @@ modules:
         subaccount:
           existing_destinations_policy: update
           destinations:
-            - Authentication: OAuth2UserTokenExchange
-              HTML5.DynamicDestination: true
-              Name: sflight-srv
-              TokenServiceInstanceName: sflight-auth
-              TokenServiceKeyName: sflight-auth-key
-              URL: ~{srv-api/srv-url}
-              sap.cloud.service: sap.fe.cap.sflight
             - Name: sflight-cdm
               ServiceInstanceName: sflight-html5-repo-runtime
               ServiceKeyName: sflight-html5-repo-runtime-key
@@ -220,12 +213,21 @@ resources:
               - Authentication: NoAuthentication
                 HTML5.DynamicDestination: true
                 HTML5.ForwardAuthToken: true
+                HTML5.IASDependencyName: sflight-api
                 Name: sflight-srv
                 URL: ~{srv-api/srv-url}
                 forwardAuthToken: true
             existing_destinations_policy: update
           subaccount:
             destinations:
+              - Authentication: NoAuthentication
+                HTML5.DynamicDestination: true
+                HTML5.ForwardAuthToken: true
+                HTML5.IASDependencyName: sflight-api
+                Name: sflight-srv
+                URL: ~{srv-api/srv-url}
+                forwardAuthToken: true
+                sap.cloud.service: sap.fe.cap.sflight
               - Authentication: NoAuthentication
                 Name: sflight-rt
                 ProxyType: Internet
