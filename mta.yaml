@@ -145,6 +145,28 @@ modules:
               ServiceKeyName: sflight-html5-repo-runtime-key
               URL: https://html5-apps-repo-rt.cfapps.eu12.hana.ondemand.com/applications/cdm/sap.fe.cap.sflight
 
+  - name: sflight
+    type: approuter.nodejs
+    path: app/router
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: sflight-uaa
+      - name: sflight-cloud-logging
+    provides:
+      - name: app-api
+        properties:
+          app-protocol: ${protocol}
+          app-uri: ${default-uri}
+
 resources:
   # ------------------------------------------------------------
   - name: sflight-db
@@ -167,6 +189,11 @@ resources:
       config:
         xsappname: sflight-${space}
         tenant-mode: dedicated
+        oauth2-configuration:
+          redirect-uris:
+            - https://~{app-api/app-uri}/**
+    requires:
+      - name: app-api
 
   # ------------------------------------------------------------
   - name: sflight-html5-repo-runtime
