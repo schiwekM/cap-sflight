@@ -5,15 +5,7 @@
         "type": "application",
         "title": "{{title}}",
         "description": "{{description}}",
-        "i18n": {
-            "bundleName": "sap.fe.cap.travel.i18n.i18n",
-            "supportedLocales": [
-                "en",
-                "de",
-                "fr"
-            ],
-            "fallbackLocale": "en"
-        },
+        "i18n": "i18n/i18n.properties",
         "applicationVersion": {
             "version": "1.0.0"
         },

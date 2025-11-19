@@ -9,6 +9,9 @@ resources:
     propertiesFileSourceEncoding: UTF-8
 
 builder:
+  componentPreload:
+    excludes:
+      - "sap/fe/cap/travel_analytics/manifest.json"
   resources:
     excludes:
       - "/test/**"
