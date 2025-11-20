@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "space",
+  "type": "object",
+  "description": "Spaces are grouping content, currently only pages",
+  "required": [
+    "_version",
+    "identification",
+    "payload"
+  ],
+  "properties": {
+    "_version": {
+      "description": "Spaces have been introduced with CDM version 3.1",
+      "type": "string",
+      "enum": [
+        "3.2.0",
+        "3.2",
+        "3.1.0",
+        "3.1"
+      ]
+    },
+    "identification": {
+      "$ref": "identification.json"
+    },
+    "payload": {
+      "type": "object",
+      "required": ["viz"],
+      "properties": {
+        "viz": {
+          "description": "List of the assigned application.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/contentNode"
+          }
+        }
+      }
+    },
+    "texts": {
+      "$ref": "texts.json"
+    }
+  },
+  "definitions": {
+    "contentNode": {
+      "type": "object",
+      "required": ["appId", "vizId"],
+      "additionalProperties": false,
+      "properties": {
+        "appId": {
+          "$ref": "commons.json#/definitions/id"
+        },
+        "vizId": {
+          "$ref": "commons.json#/definitions/id"
+        }
+      }
+    }
+  }
+}

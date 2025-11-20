@@ -1,0 +1,16 @@
+{
+      "_version": "3.2.0",
+      "identification": {
+        "id": "sap.fe.cap.sflight.space",
+        "title": "SFlight",
+        "entityType": "space"
+      },
+      "payload": {
+        "contentNodes": [
+          {
+            "type": "page",
+            "id": "sap.fe.cap.sflight.workpage"
+          }
+        ]
+      }
+    }

@@ -1,0 +1,106 @@
+{
+    "_version": "3.2",
+    "identification": {
+        "id": "sap.fe.cap.sflight.card.travel",
+        "entityType": "businessapp",
+        "title": "Travels"
+    },
+    "payload": {
+        "visualizations": {
+            "CARD_TRAVELS": {
+                "vizType": "sap.card",
+                "vizConfig": {
+                    "sap.app": {
+                        "id": "sap.fe.cap.sflight.travel-card",
+                        "type": "card",
+                        "i18n": "./dynamic_dest/sflight-srv/i18n/i18n.properties",
+                        "title": "{{CARD_TRAVELS_TITLE}}",
+                        "subtitle": "{{CARD_TRAVELS_SUBTITLE}}"
+                    },
+                    "sap.card": {
+                        "type": "List",
+                        "configuration": {
+                            "parameters": {
+                                "top": {
+                                    "value": 4,
+                                    "type": "integer"
+                                },
+                                "maxItems": {
+                                    "value": 4
+                                }
+                            },
+                            "destinations": {
+                                "sflight": {
+                                    "name": "sflight-srv"
+                                }
+                            }
+                        },
+                        "data": {
+                            "request": {
+                                "url": "{{destinations.sflight}}/processor/Travel?$count=true&$select=TravelStatus_code,TravelUUID,TravelID&$expand=to_Agency($select=Name),TravelStatus($select=name),to_Customer($select=FirstName,LastName)&$orderby=TravelID%20desc"
+                            },
+                            "path": "/value"
+                        },
+                        "header": {
+                            "actions": [
+                                {
+                                    "type": "Navigation",
+                                    "parameters": {
+                                        "ibnTarget": {
+                                            "semanticObject": "travel",
+                                            "action": "process"
+                                        }
+                                    }
+                                }
+                            ],
+                            "title": "{{CARD_TRAVELS_TITLE}}",
+                            "subTitle": "{{CARD_TRAVELS_SUBTITLE}}",
+                            "status": {
+                                "text": "{= format.text(${i18n>CARD.COUNT_X_OF_Y}, [${paginator>/skip} + ${parameters>/visibleItems}, ${/@odata.count}])}"
+                            }
+                        },
+                        "content": {
+                            "maxItems": "{parameters>/maxItems/value}",
+                            "item": {
+                                "title": "{TravelID}",
+                                "info": {
+                                    "value": "{TravelStatus/name}",
+                                    "state": "{= ${TravelStatus_code} === 'O' ? 'Warning' : (${TravelStatus_code} === 'A' ? 'Success' : 'Neutral') }"
+                                },
+                                "attributesLayoutType": "OneColumn",
+                                "attributes": [
+                                    {
+                                        "value": "{i18n>CARD_TRAVELS_CUSTOMER}: {to_Customer/LastName}"
+                                    },
+                                    {
+                                        "value": "{i18n>CARD_TRAVELS_AGENCY}: {to_Agency/Name}"
+                                    }
+                                ],
+                                "actions": [
+                                    {
+                                        "type": "Navigation",
+                                        "parameters": {
+                                            "ibnTarget": {
+                                                "semanticObject": "travel",
+                                                "action": "process"
+                                            },
+                                            "ibnParams": {
+                                                "TravelUUID": "{TravelUUID}"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        "footer": {
+                            "paginator": {
+                                "totalCount": "{/@odata.count}",
+                                "pageSize": "{parameters>/top/value}"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

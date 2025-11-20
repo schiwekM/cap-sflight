@@ -1,0 +1,68 @@
+{
+      "_version": "3.2.0",
+      "identification": {
+        "id": "sap.fe.cap.sflight.workpage",
+        "entityType": "workpage",
+        "title": "SFlight"
+      },
+      "payload": {
+        "workpageConfig": {
+          "title": "SFlight"
+        },
+        "rows": [
+          {
+            "id": "apps",
+            "rowConfig": {
+              "fillRowHeight": false
+            },
+            "columns": [
+              {
+                "id": "apps-col1",
+                "columnConfig": {},
+                "cells": [
+                  {
+                    "id": "apps-col1-cell1",
+                    "cellConfig": {},
+                    "widgets": [
+                      {
+                        "id": "widg-travel_analytics",
+                        "viz": {
+                          "appId": "sap.fe.cap.travel_analytics",
+                          "vizId": "travel-alp-inbound"
+                        }
+                      },
+                      {
+                        "id": "widg-travel",
+                        "viz": {
+                          "appId": "sap.fe.cap.travel",
+                          "vizId": "travel-inbound"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "apps-col2",
+                "columnConfig": {},
+                "cells": [
+                  {
+                    "id": "apps-col2-cell1",
+                    "cellConfig": {},
+                    "widgets": [
+                      {
+                        "id": "widg-travel-list",
+                        "viz": {
+                          "appId": "sap.fe.cap.sflight.card.travel",
+                          "vizId": "CARD_TRAVELS"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }

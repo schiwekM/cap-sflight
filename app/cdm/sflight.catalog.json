@@ -1,0 +1,28 @@
+{
+      "_version": "3.2",
+      "identification": {
+        "id": "sap.fe.cap.sflight.catalog",
+        "title": "{{title}}",
+        "entityType": "catalog"
+      },
+      "payload": {
+        "viz": [
+          {
+            "appId": "sap.fe.cap.travel_analytics",
+            "vizId": "travel-alp-inbound"
+          },
+          {
+            "appId": "sap.fe.cap.travel",
+            "vizId": "travel-inbound"
+          }
+        ]
+      },
+      "texts": [
+        {
+          "locale": "",
+          "textDictionary": {
+            "title": "SFLight apps"
+          }
+        }
+      ]
+    }

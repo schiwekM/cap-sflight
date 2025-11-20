@@ -1,0 +1,32 @@
+{
+    "_version": "3.2",
+    "identification": {
+        "id": "sap.fe.cap.sflight.processor",
+        "entityType": "role",
+        "title": "Travel processor"
+    },
+    "payload": {
+        "apps": [
+            {
+                "id": "sap.fe.cap.travel_analytics"
+            },
+            {
+                "id": "sap.fe.cap.travel"
+            },
+            {
+                "id": "sap.fe.cap.sflight.card.travel"
+            }
+        ],
+        "catalogs": [
+            {
+                "id": "sap.fe.cap.sflight.catalog"
+            }
+        ],
+        "spaces": [
+            {
+                "id": "sap.fe.cap.sflight.space"
+            }
+        ],
+        "relatedRoleAssignments": ["sflight-reviewer"]
+    }
+}

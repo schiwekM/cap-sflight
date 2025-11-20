@@ -1,0 +1,49 @@
+{
+    "yaml.schemas": {
+        "https://sap.github.io/ui5-tooling/schema/ui5.yaml.json": "file:///Users/I538919/Documents/GitHub/cap-sflight/app/travel_processor/ui5.yaml"
+    },
+    "json.schemas": [
+        {
+            "fileMatch": [
+                "**/app/cdm/**/*.role.json"
+            ],
+            "url": "./_cap-js-launchpad/_cdm-schema/role.json"
+        },
+        {
+            "fileMatch": [
+                "**/app/cdm/**/*.catalog.json"
+            ],
+            "url": "./_cap-js-launchpad/_cdm-schema/catalog.json"
+        },
+        {
+            "fileMatch": [
+                "**/app/cdm/**/*.space.json"
+            ],
+            "url": "./_cap-js-launchpad/_cdm-schema/space.json"
+        },
+        {
+            "fileMatch": [
+                "**/app/cdm/**/*.workpage.json"
+            ],
+            "url": "./_cap-js-launchpad/_cdm-schema/workpage.json"
+        },
+        {
+            "fileMatch": [
+                "**/app/cdm/**/*.page.json"
+            ],
+            "url": "./_cap-js-launchpad/_cdm-schema/page.json"
+        },
+        {
+            "fileMatch": [
+                "**/app/cdm/**/*.app.json"
+            ],
+            "url": "./_cap-js-launchpad/_cdm-schema/businessapp.json"
+        },
+        {
+            "fileMatch": [
+                "**/app/cdm/**/*.card.json"
+            ],
+            "url": "./_cap-js-launchpad/_cdm-schema/businessapp.json"
+        }
+    ]
+}
