@@ -11,12 +11,8 @@ build-parameters:
   before-all:
     - builder: custom
       commands:
-        # set 'CDS_ENV=node' to pick the 'node' build profile settings, defined in package.json
-        - npm ci
-        - npx -p @sap/cds-dk cds build --profile production,node
-        - mkdir gen/app
-        - cp app/cdm.json gen/app/cdm.json
-        #- cp -R patches gen/srv/
+        #- npm ci
+        - npx -p @sap/cds-dk cds build --production
 
 modules:
   # --------------------- SERVER MODULE ------------------------
@@ -67,7 +63,7 @@ modules:
       config:
         destinations:
           - forwardAuthToken: true
-            name: sflight-srv
+            name: srv-api
             url: ~{srv-api/srv-url}
           - name: ui5
             url: https://ui5.sap.com
@@ -139,11 +135,7 @@ modules:
               TokenServiceInstanceName: sflight-uaa
               TokenServiceKeyName: sflight-uaa-key
               URL: ~{srv-api/srv-url}
-              sap.cloud.service: sap.fe.cap.sflight
-            - Name: sflight-cdm
-              ServiceInstanceName: sflight-html5-repo-runtime
-              ServiceKeyName: sflight-html5-repo-runtime-key
-              URL: https://html5-apps-repo-rt.cfapps.eu12.hana.ondemand.com/applications/cdm/sap.fe.cap.sflight
+              sap.cloud.service: capire.sflight
 
   - name: sflight
     type: approuter.nodejs
@@ -224,15 +216,6 @@ resources:
         version: 1.0.0
         HTML5Runtime_enabled: true
         init_data:
-          instance:
-            destinations:
-              - Authentication: NoAuthentication
-                HTML5.DynamicDestination: true
-                HTML5.ForwardAuthToken: true
-                Name: sflight-srv
-                URL: ~{srv-api/srv-url}
-                forwardAuthToken: true
-            existing_destinations_policy: update
           subaccount:
             destinations:
               - Authentication: NoAuthentication

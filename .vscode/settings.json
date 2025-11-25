@@ -1,6 +1,6 @@
 {
     "yaml.schemas": {
-        "https://sap.github.io/ui5-tooling/schema/ui5.yaml.json": "file:///Users/I538919/Documents/GitHub/cap-sflight/app/travel_processor/ui5.yaml"
+        "https://ui5.github.io/cli/schema/ui5.yaml.json": "file:///Users/I538919/Documents/GitHub/cap-sflight/app/travel_processor/ui5.yaml",
     },
     "json.schemas": [
         {

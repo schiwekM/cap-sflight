@@ -1,8 +1,8 @@
 {
   "routes": [
     {
-      "source": "^/(.*)$",
-      "target": "$1",
+      "source": "^/odata/(.*)$",
+      "target": "/odata/$1",
       "destination": "srv-api",
       "csrfProtection": true
     }

@@ -99,7 +99,7 @@
         "relatedRoleAssignments": {
           "type": "array",
           "items": {
-            "$ref": "commons.json#/definitions/id"
+            "$ref": "commons.json#/definitions/reference"
           }
         }
       }

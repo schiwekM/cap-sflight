@@ -1,0 +1,12 @@
+diff --git a/node_modules/@cap-js/cds-typer/lib/csn.js b/node_modules/@cap-js/cds-typer/lib/csn.js
+index e7e5769..3773917 100644
+--- a/node_modules/@cap-js/cds-typer/lib/csn.js
++++ b/node_modules/@cap-js/cds-typer/lib/csn.js
+@@ -273,6 +273,7 @@ function collectDraftEnabledEntities(csn) {
+  */
+ function propagateForeignKeys(csn) {
+     for (const element of Object.values(csn.definitions)) {
++        if (!element.keys)
+         Object.defineProperty(element, 'keys', {
+             get: function () {
+                 // cached access to all immediately defined _and_ inherited keys.

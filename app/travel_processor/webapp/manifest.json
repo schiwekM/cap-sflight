@@ -230,6 +230,6 @@
     },
     "sap.cloud": {
         "public": true,
-        "service": "sap.fe.cap.sflight"
+        "service": "capire.sflight"
     }
 }

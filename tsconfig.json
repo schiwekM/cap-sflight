@@ -15,7 +15,6 @@
             ]
         },
         "types": [
-            "jest",
             "node",
             "@cap-js/cds-types",
         ],

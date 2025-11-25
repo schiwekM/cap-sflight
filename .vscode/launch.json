@@ -5,6 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "command": "cds build --production",
+      "name": "cds build",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
       "command": "cds watch",
       "name": "cds watch",
       "request": "launch",

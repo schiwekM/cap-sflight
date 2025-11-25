@@ -1,0 +1,26 @@
+{
+  "name": "@sap-vt/launchpad",
+  "version": "1.0.0",
+  "main": "cds-plugin.js",
+  "files": [
+    "_i18n",
+    "lib",
+    "srv",
+    "db",
+    "index.cds",
+    "cds-plugin.js",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "peerDependencies": {
+    "@sap/cds": ">=9"
+  },
+  "engines": {
+    "node": "^22"
+  },
+  "scripts": {
+    "lint": "npx eslint .",
+    "test": "npx jest --silent"
+  }
+}

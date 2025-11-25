@@ -1,19 +1,13 @@
 import cds from '@sap/cds';
 import express from 'express';
 import path from 'path';
-import xsenv from '@sap/xsenv';
-import passport from 'passport';
-import { v3 } from '@sap/xssec/';
 
 if (process.env.NODE_ENV === 'production') {
     cds.once('bootstrap', (app) => {
       app.use(
         '/i18n',
-        passport.initialize(),
-        passport.authenticate(new v3.JWTStrategy(xsenv.getServices({ xsuaa: { tag: 'xsuaa' } }).xsuaa, null), {
-          session: false,
-          failWithError: true,
-        }),
+        // @ts-expect-error cds.middlewares.before exists :(
+        cds.middlewares.before,
         express.static(path.join(__dirname, '_i18n'), {
             maxAge: 31536000
         }),

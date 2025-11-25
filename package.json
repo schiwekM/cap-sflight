@@ -6,52 +6,44 @@
   "license": "SAP SAMPLE CODE LICENSE",
   "repository": "https://github.com/SAP-samples/cap-sflight",
   "engines": {
-    "node": ">=20"
+    "node": "22"
   },
   "scripts": {
     "lint": "npx eslint .",
     "start": "cds-serve",
-    "build:ui": "npm run build --prefix app/travel_analytics && npm run build --prefix app/travel_processor",
-    "test": "jest",
-    "test:mocha": "npx -y mocha",
-    "travel-processor": "cds watch --open sap.fe.cap.travel/index.html?sap-ui-xx-viewCache=false",
-    "travel-analytics": "cds watch --open sap.fe.cap.travel_analytics/index.html?sap-ui-xx-viewCache=false",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "test": "jest"
   },
   "dependencies": {
-    "@cap-js/hana": ">=2",
-    "@sap/cds": ">=9.1",
-    "@sap/hana-client": "^2.25.29",
-    "@sap/xsenv": "^6.0.0",
+    "@cap-js/hana": "^2",
+    "@sap/cds": ">9.0.0",
     "@sap/xssec": "^4.9.0",
     "express": "^4",
-    "passport": "^0.7.0",
-    "patch-package": "^8.0.0",
+    "patch-package": "^8.0.1",
     "path": "^0.12.7"
   },
   "devDependencies": {
-    "cds-plugin-ui5": "^0.13.6",
-    "@cap-js/cds-test": "^0",
-    "@cap-js/cds-typer": "^0.35.0",
+    "@sap-vt/launchpad": "file:./_launchpad_plugin",
+    "@cap-js/cds-typer": "^0.38.0",
     "@cap-js/cds-types": "^0",
     "@cap-js/sqlite": ">=2",
     "@sap/cds-dk": ">=9.1",
     "@sap/ux-specification": "UI5-1.128",
-    "@types/jest": "^29.5.13",
-    "better-sqlite3": "^12.2.0",
     "cds-launchpad-plugin": "^2.2.0",
-    "cross-spawn": "^7.0.3",
+    "cds-plugin-ui5": "^0.13.6",
+    "chai": "^6.2.1",
     "eslint": "^9",
-    "http-proxy": "^1.18.1",
-    "jest": "^29.0.2",
-    "qunit": "^2.9.3",
-    "ts-jest": "^29.2.5",
     "tsx": "^4.19.2",
-    "typescript-eslint": "^8.12.2"
+    "typescript-eslint": "^8.12.2",
+    "undici-types": "^7.16.0"
   },
   "cds": {
+    "features": {
+      "skip_apply_parsing": true
+    },
     "launchpad": {
-      "version": "1.141.0"
+      "version": "1.142.1",
+      "template": "async"
     },
     "requires": {
       "[production]": {
@@ -63,11 +55,6 @@
         },
         "telemetry": {
           "kind": "to-cloud-logging"
-        }
-      },
-      "[hybrid]": {
-        "db": {
-          "kind": "hana"
         }
       },
       "[development]": {
@@ -112,6 +99,9 @@
           },
           {
             "for": "hana"
+          },
+          {
+            "for": "workzone"
           }
         ]
       }
