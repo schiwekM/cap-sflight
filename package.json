@@ -17,16 +17,17 @@
   "dependencies": {
     "@cap-js/hana": "^2",
     "@sap/cds": ">9.0.0",
+    "@sap/cds-plugin-enterprise-search": "^3.1.2",
     "@sap/xssec": "^4.9.0",
     "express": "^4",
     "patch-package": "^8.0.1",
     "path": "^0.12.7"
   },
   "devDependencies": {
-    "@sap-vt/launchpad": "file:./_launchpad_plugin",
     "@cap-js/cds-typer": "^0.38.0",
     "@cap-js/cds-types": "^0",
     "@cap-js/sqlite": ">=2",
+    "@sap-vt/launchpad": "file:./_launchpad_plugin",
     "@sap/cds-dk": ">=9.1",
     "@sap/ux-specification": "UI5-1.128",
     "cds-launchpad-plugin": "^2.2.0",

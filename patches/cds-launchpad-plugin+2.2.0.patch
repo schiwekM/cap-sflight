@@ -1,0 +1,38 @@
+diff --git a/node_modules/cds-launchpad-plugin/templates/async/launchpad.html b/node_modules/cds-launchpad-plugin/templates/async/launchpad.html
+index 4c54610..cca267b 100644
+--- a/node_modules/cds-launchpad-plugin/templates/async/launchpad.html
++++ b/node_modules/cds-launchpad-plugin/templates/async/launchpad.html
+@@ -23,14 +23,20 @@
+                 fiori2: {
+                     componentData: {
+                         config: {
+-                            enableNotificationsUI: false,
+-                            enableNotifications: false,
+-                            enableSearch: false,
+-                            enablePersonalization: false,
++                            enableNotificationsUI: true,
++                            enableNotifications: true,
++                            enableSearch: true,
++                            enablePersonalization: true,
+                             enableSetTheme: true,
+                             enableSetLanguage: true,
++                            esearch: { 
++                                sinaConfiguration: {
++                                    provider : "hana_odata",
++                                    url: "/odata/v4/enterprise-search",
++                                }
++                            }
+                         },
+-                    },
++                    }
+                 },
+             },
+             bootstrapPlugins: {
+@@ -53,7 +59,6 @@
+         };
+     </script>
+ 
+-<script defer id="sap-ushell-bootstrap" src="LIB_URL/test-resources/sap/ushell/shells/sandbox/fioriSandboxInitialConfig.js"></script>
+ <script id="sap-ushell-bootstrap" src="LIB_URL/test-resources/sap/ushell/bootstrap/sandbox.js"></script>
+ <script defer id="sap-ui-bootstrap"
+         src="LIB_URL/resources/sap-ui-core.js"
