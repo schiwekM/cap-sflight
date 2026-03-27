@@ -11,7 +11,7 @@
         },
         "dataSources": {
             "mainService": {
-                "uri": "analytics/",
+                "uri": "/analytics/",
                 "type": "OData",
                 "settings": {
                     "odataVersion": "4.0"

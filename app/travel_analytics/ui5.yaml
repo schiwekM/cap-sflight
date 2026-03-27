@@ -40,6 +40,8 @@ server:
         backend:
         - path: /odata
           url: http://localhost:4004/odata
+        - path: /analytics
+          url: http://localhost:4004/analytics
     - name: fiori-tools-appreload
       afterMiddleware: compression
     - name: fiori-tools-preview
