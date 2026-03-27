@@ -58,12 +58,8 @@
     },
     "sap.ui5": {
         "flexEnabled": false,
-        "resources": {
-            "js": [],
-            "css": []
-        },
         "dependencies": {
-            "minUI5Version": "1.130.0",
+            "minUI5Version": "1.145.0",
             "libs": {
                 "sap.ui.core": {},
                 "sap.fe.templates": {}
